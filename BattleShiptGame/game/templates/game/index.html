@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Page</title>
+    <link rel="stylesheet" href="{% static 'game/style/styleMainPage.css' %}"> 
+</head>
+<body style="background: url('{% static "game/images/background.png" %}') no-repeat center center fixed; background-size: cover;">
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Big Title in the Center -->
+        <h1 class="typing-effect">Welcome to BattleShip Online!</h1>
+
+        <!-- Form with Input Field and Button -->
+        <div class="form-section">
+            <form action="gamestart" method="POST">
+            {% csrf_token %}
+            <input type="text" id="username" placeholder="Enter Username">
+            <button>Play</button>
+            </form>
+        </div>
+
+        <!-- Version Information Section -->
+        <div class="info-section">
+            <p>Version: 1.0.0</p>
+            <p>Last updated: October 2024</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

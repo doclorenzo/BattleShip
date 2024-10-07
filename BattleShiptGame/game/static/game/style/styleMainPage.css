@@ -1,0 +1,91 @@
+/* General Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8); /* Optional: semi-transparent background to improve text readability */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Big Title */
+h1 {
+    font-size: 4rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Typing animation */
+.typing-effect {
+    overflow: hidden; /* Ensures the text doesn't wrap to the next line */
+    border-right: .15em solid #333; /* Adds a cursor effect */
+    white-space: nowrap; /* Prevents wrapping */
+    width: 0; /* Initially hide the text */
+    animation: typing 2s steps(30, end) forwards, blink-caret 0.75s step-end infinite; /* Controls animation timing */
+}
+
+/* Typing Effect: Keyframes */
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+/* Cursor blink effect */
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #333; }
+}
+/* Form Section: Username Input and Button */
+.form-section {
+    margin-bottom: 30px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 1.2rem;
+    width: 250px;
+    margin-right: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 1.2rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Information Section (version info) */
+.info-section p {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* General styling for the table */
+table {
+    border-collapse: collapse;
+    margin: 20px auto; /* Center table horizontally */
+}
+
+/* Styling for the table cells */
+td {
+    width: 50px;   /* Cell width (adjust as needed) */
+    height: 50px;  /* Cell height to ensure squares */
+    border: 1px solid black; /* Border around each cell */
+}

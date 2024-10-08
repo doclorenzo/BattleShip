@@ -1,0 +1,72 @@
+/* General page layout */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+}
+
+/* Left side: Table styling */
+
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed; /* Ensures fixed-size cells */
+}
+
+table td {
+    width: 40px;  /* Same size as draggable squares */
+    height: 40px; /* Same size as draggable squares */
+    border: 1px solid black;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #f0f0f0;
+    position: relative; /* Ensure proper positioning of elements */
+    padding: 0; /* Remove padding from the cells */
+    box-sizing: border-box; /* Ensure borders are included in width and height */
+}
+
+/* Right side: Draggable squares styling */
+.right-side {
+    width: 20%;
+}
+
+.draggable {
+    width: 40px;
+    height: 40px;
+    background-color: red;
+    margin-bottom: 0;
+    cursor: grab;
+    box-sizing: border-box; /* Ensure the border is included in the element size */
+}
+
+#square2 { background-color: blue; }
+#square3 { background-color: green; }
+#square4 { background-color: yellow; }
+#square5 { background-color: purple; }
+
+/* Hover and active effects for draggable elements */
+.draggable:active {
+    cursor: grabbing;
+    opacity: 0.6;
+}
+
+/* Make sure the content doesn't overflow */
+td .draggable {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    box-sizing: border-box;
+}
+

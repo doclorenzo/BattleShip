@@ -1,0 +1,15 @@
+<table id="droppable-table">
+    <tbody>
+        {% for i in '1234567890'|make_list %}
+        <tr>
+            {% for i in '1234567890'|make_list %}
+                <td></td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% static 'game/style/gamePrep.css' %}
+
+{% static 'game/scripts/gamePrep.js' %}

@@ -1,0 +1,107 @@
+/* General page layout */
+body, html {
+    justify-content: center;
+    font-family: Arial, sans-serif;
+
+    font-family: 'Arial', sans-serif;
+    background-size: cover;
+    background-position: center;
+    color: #2c3e50;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    padding: 10px 0 30px 0;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    color:#ffcc00;
+}
+
+.aggiusta {
+    margin-left: 12%;
+}
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed; /* Ensures fixed-size cells */
+    
+}
+
+table td {
+    width: 40px;  /* Same size as draggable squares */
+    height: 40px; /* Same size as draggable squares */
+    text-align: center;
+    vertical-align: middle;
+    position: relative; /* Ensure proper positioning of elements */
+    padding: 0; /* Remove padding from the cells */
+    box-sizing: border-box; /* Ensure borders are included in width and height */
+    border: 1px solid #ffcc00;
+    background-color: #2c3e50;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+
+.right-side {
+    margin-right: 15%;
+    display: flex; /* Abilita Flexbox */
+    justify-content: space-between; /* Distribuisce i div orizzontalmente con spazio tra loro */
+    align-items: center;
+    width: 30%;
+}
+
+.draggable {
+    cursor: grab;
+    margin-bottom:20px;
+    box-sizing: border-box; /* Ensure the border is included in the element size */
+    border-radius: 1px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.square {
+    width: 40px;
+    height: 40px;
+    background-color: #ffcc00;
+}
+
+.rectangle-1x2 {
+    width: 40px;
+    height: 80px; /* 2 cells in height */
+    background-color: #ffcc00;
+}
+
+.rectangle-3x1 {
+    width: 120px;
+    height: 40px; 
+    background-color: #ffcc00;
+}
+
+/* Hover and active effects for draggable elements */
+.draggable:active {
+    cursor: grabbing;
+    opacity: 0.6;
+}
+
+.draggable:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Make sure the content doesn't overflow */
+td .draggable {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+#send button {
+    height:5%;
+    margin-top:300px;
+    background-color: aquamarine;
+}

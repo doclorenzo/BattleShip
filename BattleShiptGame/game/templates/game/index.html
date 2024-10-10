@@ -20,7 +20,7 @@
         <div class="form-section">
             <form action="gamestart" method="POST">
             {% csrf_token %}
-            <input type="text" id="username" placeholder="Enter Username">
+            <input type="text" id="username" placeholder="Enter Username" name="username">
             <button>Play</button>
             </form>
         </div>

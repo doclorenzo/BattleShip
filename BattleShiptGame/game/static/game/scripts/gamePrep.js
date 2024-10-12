@@ -1,7 +1,8 @@
 let occupiedCellsList=[];
 let listUsedShapes=[];
+let shipSocket;
 
-
+//Basic script to enable the eunctionalities of the draggable objects
 
 document.querySelectorAll('.draggable').forEach(draggable => {
     draggable.addEventListener('dragstart', function (event) {
@@ -45,6 +46,7 @@ document.querySelectorAll('#droppable-table td').forEach(cell => {
 });
 
 // Function to check if the shape can fit in the table
+
 function checkFit(rowIndex, cellIndex, shape,  rows, cols) {
     let table = document.getElementById('droppable-table');
 
@@ -64,7 +66,8 @@ function checkFit(rowIndex, cellIndex, shape,  rows, cols) {
 
 
 
-// Function to clear the previous cells occupied by the shape
+// Function to clear the previous cells occupied by the shape when you move it
+
 function clearPreviousPosition(shape) {
     let table = document.getElementById('droppable-table');
     // Loop through all table cells to find the previously occupied cells
@@ -74,43 +77,44 @@ function clearPreviousPosition(shape) {
             //rettangolo 1x2
             if( shape.classList.contains("rectangle-1x2") && cell.contains(shape)){
                 cell.classList=''; //cell 1
-                cell.style.backgroundColor = '#2c3e50'; // Reset the cell background to default
+                cell.style.backgroundColor = '#a1e0af'; // Reset the cell background to default
 
                 let occupiedCell=Number(cell.id)+10;
                 occupiedCell=String(occupiedCell);
                 occupiedCell=table.rows[ occupiedCell[0] ].cells[occupiedCell[1]];
                 occupiedCell.classList=''; //cell under 1
-                occupiedCell.style.backgroundColor = '#2c3e50'; // Reset the cell background to default
+                occupiedCell.style.backgroundColor = '#a1e0af'; // Reset the cell background to default
                 break;
             }
 
             //rettangolo-3x1
             if( shape.classList.contains("rectangle-3x1") && cell.contains(shape)){
                 cell.classList=''; //cell 1
-                cell.style.backgroundColor = '#2c3e50'; // Reset the cell background to default
+                cell.style.backgroundColor = '#a1e0af'; // Reset the cell background to default
 
                 let occupiedCell=Number(cell.id)+1;
                 occupiedCell=String(occupiedCell);
                 occupiedCell=table.rows[ occupiedCell[0] ].cells[occupiedCell[1]];
                 occupiedCell.classList=''; //cell 1 shift right 1
-                occupiedCell.style.backgroundColor = '#2c3e50'; // Reset the cell background to default
+                occupiedCell.style.backgroundColor = '#a1e0af'; // Reset the cell background to default
                 occupiedCell=Number(cell.id)+2;
                 occupiedCell=String(occupiedCell);
                 occupiedCell=table.rows[ occupiedCell[0] ].cells[occupiedCell[1]];
                 occupiedCell.classList=''; //cell 1 shift rigth 2 
-                occupiedCell.style.backgroundColor = '#2c3e50'; // Reset the cell background to default
+                occupiedCell.style.backgroundColor = '#a1e0af'; // Reset the cell background to default
                 break;
             }
             
             if (cell.contains(shape)) {
                 cell.classList='';
-                cell.style.backgroundColor = '#2c3e50'; // Reset the cell background to default
+                cell.style.backgroundColor = "#a1e0af"; // Reset the cell background to default
             }
                
         }
     }
 }
 
+//Script to place the shipt on the battle field
 
 function placeShape(rowIndex, cellIndex, shape, rows, cols, flagRectanglemoved) {
     let table = document.getElementById('droppable-table');
@@ -152,8 +156,17 @@ function placeShape(rowIndex, cellIndex, shape, rows, cols, flagRectanglemoved) 
     shape.style.left = '0';
 }
 
+
+//Button Functionaity, web socket creation
+
+document.getElementById('send').addEventListener('click', sendFunc);
+
 function sendFunc() {
-   /*if(listUsedShapes.length!=9) {
+
+    //prepare the data
+
+    playerName=document.getElementById("playerName").getAttribute("value")
+    /*if(listUsedShapes.length!=9) {
         alert("Place all the ships on the board!");
         return;
     }*/
@@ -166,23 +179,105 @@ function sendFunc() {
         }
     }
 
-    csfr=String(document.getElementsByName("csrfmiddlewaretoken")[0].value);
+    //WEB SOCKET
+    
+    let url = "ws://"+window.location.host+"/ws/socket-server"
+    shipSocket= new WebSocket(url)
 
-    fetch("http://127.0.0.1:8000/playing", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            'X-CSRFToken': csfr
-        },
-        body: JSON.stringify({"occupiedCells":occupiedCellsList})
-    })
-    .then(response => {
-            window.location.href = response.url;
-    })
-    .then(data => console.log(data))
-    .catch((error) => console.error('Errore:', error));
+    shipSocket.onmessage = function(e){
+        const data = JSON.parse(e.data);
+        console.log('Data:',data)
+        
+        if(data.type=="Connected"){
+            shipSocket.send(JSON.stringify({
+                "type":"begin",
+                "name": playerName,
+                "ships": occupiedCellsList,
+            }))
+        }
 
-};
+        else if(data.type=="Queue"){
+            showLoading();
+        }
 
-// Aggiungere un listener per l'evento 'click' sul bottone
-document.getElementById('send').addEventListener('click', sendFunc);
+        else if(data.type=="Start"){
+            document.getElementById('content').innerHTML = data.page;
+            document.getElementById('ClickableTable').addEventListener('click', rilevaCella);
+
+            for(let r of table.rows){
+                for(let c of r.cells){
+                    console.log(c.id)
+                    if(occupiedCellsList.includes(c.id)){
+                        document.getElementById("A"+c.id).style.backgroundColor="#34c720"
+                    }
+                }
+            }
+        }
+
+        else if(data.type=="opponent_move"){
+
+            if(data.hit){
+                document.getElementById("A"+data.cell).classList.add("cella-con-croce")
+            }
+            else{
+                document.getElementById("A"+data.cell).style.backgroundColor="white"
+            }
+        }
+
+        else if(data.type=="ack_hit"){
+
+            if(data.hit){
+                document.getElementById("B"+data.cell).classList.add("cella-con-croce")
+            }
+            else{
+                document.getElementById("B"+data.cell).style.backgroundColor="white"
+            }
+
+        }
+
+        else if(data.type=="win"){
+            document.getElementById("youWinLost").classList.add("youwin-text")
+            document.getElementById("youWinLost").textContent="YOU WIN"
+            showEndgame()
+        }
+        else if(data.type=="lost"){
+            document.getElementById("youWinLost").classList.add("youlost-text")
+            document.getElementById("youWinLost").textContent="YOU LOST"
+            showEndgame()
+        }
+    }
+}
+
+
+//Queue Status desing script 
+function showLoading() {
+    document.getElementById('loading-overlay').style.display = 'flex'; // Mostra l'overlay
+    document.body.classList.add('blur-active'); // Aggiunge l'effetto sfocatura
+}
+
+// Function which manages the click of a table's cell
+function rilevaCella(event) {
+    const cella = event.target;  
+    if (cella.tagName === 'TD') {  
+        shipSocket.send(JSON.stringify({
+            "type":"hit",
+            "cell":cella.id.substr(1,2)
+        }))
+    }
+}
+
+function showEndgame() {
+
+    // Seleziona il contenitore della scritta YOU WIN
+    var youWin = document.getElementById('youwin');
+    var overlay = document.getElementById('overlay');
+
+    // Aggiungi la classe per far partire l'animazione
+    youWin.classList.add('show');
+    overlay.classList.add('show');
+
+    // Sfoca il contenuto della pagina
+    document.querySelector('.content').classList.add('blur-background')
+
+}
+

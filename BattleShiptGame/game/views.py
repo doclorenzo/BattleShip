@@ -11,7 +11,7 @@ class GamePrep(View):
     def post(self, request):
         playerName=request.POST["username"]
         return render(request, "game/gamePrep.html", {
-            "playerName":playerName
+            "playerName": playerName
         })
     
 
@@ -23,5 +23,5 @@ class Playing(View):
 
     def post(self, request):
         data = json.loads(request.body)
-        print(data)
+        
         return redirect("playing_page")

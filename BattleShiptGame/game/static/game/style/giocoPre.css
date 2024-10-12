@@ -1,33 +1,48 @@
 /* General page layout */
-body, html {
-    justify-content: center;
+#content{
     font-family: Arial, sans-serif;
-
-    font-family: 'Arial', sans-serif;
-    background-size: cover;
-    background-position: center;
-    color: #2c3e50;
+    margin: 0;
+    height: 100vh; /* Imposta l'altezza del body al 100% della finestra */
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center; /* Centra verticalmente */
+    background-color: #f0f0f0; /* Colore di sfondo della pagina */
 }
 
 .container {
     display: flex;
     width: 100%;
     justify-content: space-between;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 5px;
+    background-color: rgba(164, 202, 27, 0.616);
+    border-radius: 20px;
     padding: 10px 0 30px 0;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
-    color:#ffcc00;
+    color:#19810c;
+}
+
+#PrepareBattle{
+    margin-bottom:10%;
+    background-color: #a1e0af;
+    padding: 5px;
+    border-radius:10px;
 }
 
 .aggiusta {
-    margin-left: 12%;
+    margin-left:0.1%;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Optional: center horizontally */
+    margin-left: 6%;
 }
 
+
 table {
+    border-radius: 10px;
     border-collapse: collapse;
     table-layout: fixed; /* Ensures fixed-size cells */
-    
+    overflow: hidden;
+    border: 1px;
+    border-color: #19810c;  
 }
 
 table td {
@@ -38,24 +53,56 @@ table td {
     position: relative; /* Ensure proper positioning of elements */
     padding: 0; /* Remove padding from the cells */
     box-sizing: border-box; /* Ensure borders are included in width and height */
-    border: 1px solid #ffcc00;
-    background-color: #2c3e50;
+    background-color: #a1e0af;
     text-align: center;
     transition: background-color 0.3s ease;
+    border-radius: 5px;
+    border: 1px solid;
 }
 
+#big {
+    width:80%;
+}
+
+#playerName {
+    color:#19810c;
+    text-align: center;
+    background-color:#a1e0af;
+    border-radius:10px;
+}
+
+#ShipsText {
+    margin-bottom: 5%;
+    background-color: #a1e0af;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+#mm{
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Optional: center horizontally */
+    height: 100%; /* Define the height of the div */
+    width: 55%;
+}
 
 .right-side {
-    margin-right: 15%;
     display: flex; /* Abilita Flexbox */
     justify-content: space-between; /* Distribuisce i div orizzontalmente con spazio tra loro */
     align-items: center;
-    width: 30%;
+    width: 60%;
+    background-color: #a1e0af;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    margin-top: 2%;
+    margin-bottom:2%;
 }
 
 .draggable {
     cursor: grab;
-    margin-bottom:20px;
+    margin-bottom: 20px;
     box-sizing: border-box; /* Ensure the border is included in the element size */
     border-radius: 1px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -64,19 +111,23 @@ table td {
 .square {
     width: 40px;
     height: 40px;
-    background-color: #ffcc00;
+    background-color: #34c720;
+    border-radius: 5px;
+    overflow: hidden;
 }
 
 .rectangle-1x2 {
     width: 40px;
     height: 80px; /* 2 cells in height */
-    background-color: #ffcc00;
+    background-color: #34c720;
+    border-radius: 5px;
 }
 
 .rectangle-3x1 {
     width: 120px;
     height: 40px; 
-    background-color: #ffcc00;
+    background-color: #34c720;
+    border-radius: 5px;
 }
 
 /* Hover and active effects for draggable elements */
@@ -100,8 +151,157 @@ td .draggable {
     box-sizing: border-box;
 }
 
-#send button {
-    height:5%;
-    margin-top:300px;
-    background-color: aquamarine;
+button {
+    padding: 12px 20px;
+    font-size: 1.2rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Sfondo semi-trasparente */
+    display: none; /* Inizialmente nascosto */
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Sfuma il contenuto della pagina quando l'overlay è attivo */
+body.blur-active #content {
+    filter: blur(5px); /* Effetto sfocatura */
+}
+
+/* Contenitore per la rotellina e il testo */
+#loading-content {
+    text-align: center;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+/* Rotellina di caricamento */
+.loader {
+    border: 8px solid #f3f3f3; /* Colore di base */
+    border-top: 8px solid #3498db; /* Colore della parte mobile */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+/* Animazione per la rotellina */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.cella-con-croce {
+    position: relative; /* Necessario per posizionare la croce */
+    width: 40;
+    height: 40;
+    background-color: #ffcc00; /* Sfondo giallo */
+    border: 1px solid red; /* Bordo rosso */
+}
+
+/* Creare una croce rossa sopra la cella */
+.cella-con-croce::before,
+.cella-con-croce::after {
+    content: '';
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 10%;
+    height: 10%;
+    background-color: red; /* Colore della croce */
+    transform: translate(-50%, -50%) rotate(45deg); /* Posiziona e ruota la barra */
+}
+
+.cella-con-croce::after {
+    transform: translate(-50%, -50%) rotate(-45deg); /* La seconda barra della croce */
+}
+
+.youwin-container {
+    position: fixed;
+    top: -100px; /* Partenza fuori dalla schermata */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0; /* Nascondi all'inizio */
+    z-index: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Testo della scritta YOU WIN */
+.youwin-text {
+    color: green;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.youlost-text {
+    color: red;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Classe che gestisce lo sfondo sfocato */
+.blur-background {
+    filter: blur(30px);
+    transition: filter 0.5s ease;
+}
+
+/* Animazione rimbalzo */
+@keyframes bounce {
+    0% {
+        top: -100px;
+        opacity: 0;
+    }
+    50% {
+        top: 30%;
+        opacity: 1;
+    }
+    75% {
+        top: 45%;
+    }
+    100% {
+        top: 40%;
+    }
+}
+
+/* Applicazione dell'animazione */
+.youwin-container.show {
+    animation: bounce 1s ease forwards;
+    opacity: 1;
+}
+
+/* Overlay che oscurerà lo sfondo */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Colore semi-trasparente */
+    visibility: hidden; /* Invisibile finché non viene attivato */
+    z-index: 1;
+    pointer-events: none; /* Disabilita i clic */
+}
+
+/* Classe per rendere l'overlay visibile */
+.overlay.show {
+    visibility: visible;
+    pointer-events: auto; /* Rende il contenuto non cliccabile */
 }

@@ -9,6 +9,22 @@
     background-color: #f0f0f0; /* Colore di sfondo della pagina */
 }
 
+#PlayingTables{
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center; /* Centra verticalmente */
+}
+
+#GiocoBack{
+    width: 100%;
+    margin: 0;
+    height: 100vh; /* Imposta l'altezza del body al 100% della finestra */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Optional: center horizontally */
+}
+
 .container {
     display: flex;
     width: 100%;
@@ -17,6 +33,14 @@
     border-radius: 20px;
     padding: 10px 0 30px 0;
     color:#19810c;
+}
+
+.Names{
+    margin-bottom:10%;
+    background-color: #a1e0af;
+    padding: 5px;
+    border-radius:10px;
+    width: 100%;
 }
 
 #PrepareBattle{
@@ -203,31 +227,6 @@ body.blur-active #content {
     100% { transform: rotate(360deg); }
 }
 
-.cella-con-croce {
-    position: relative; /* Necessario per posizionare la croce */
-    width: 40;
-    height: 40;
-    background-color: #ffcc00; /* Sfondo giallo */
-    border: 1px solid red; /* Bordo rosso */
-}
-
-/* Creare una croce rossa sopra la cella */
-.cella-con-croce::before,
-.cella-con-croce::after {
-    content: '';
-    position: absolute;
-    top: 5%;
-    left: 5%;
-    width: 10%;
-    height: 10%;
-    background-color: red; /* Colore della croce */
-    transform: translate(-50%, -50%) rotate(45deg); /* Posiziona e ruota la barra */
-}
-
-.cella-con-croce::after {
-    transform: translate(-50%, -50%) rotate(-45deg); /* La seconda barra della croce */
-}
-
 .youwin-container {
     position: fixed;
     top: -100px; /* Partenza fuori dalla schermata */
@@ -304,4 +303,27 @@ body.blur-active #content {
 .overlay.show {
     visibility: visible;
     pointer-events: auto; /* Rende il contenuto non cliccabile */
+}
+
+.x-cell {
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 40px;  /* Same size as draggable squares */
+    height: 40px; /* Same size as draggable squares */
+    text-align: center;
+    vertical-align: middle;
+    position: relative; /* Ensure proper positioning of elements */
+    padding: 0; /* Remove padding from the cells */
+    box-sizing: border-box; /* Ensure borders are included in width and height */
+    background-color: #a1e0af;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    border: 1px solid;
 }

@@ -66,6 +66,11 @@ class ShipConsumer(WebsocketConsumer):
                 self.Opponent=queuedPlayer
                 queuedPlayer.Opponent=self
 
+                self.send(json.dumps({"type":"turn_on"}))
+                self.Opponent.send(json.dumps({"type":"turn_off"}))
+                self.turn=True
+                self.Opponent.turn=False
+
                 print("Player" + self.name + " point of view:")
                 print(self.idSession)
                 print(self.shipsLocation)
@@ -78,20 +83,27 @@ class ShipConsumer(WebsocketConsumer):
             
         elif (data_json["type"]=="hit"):
             
-            hit_cell=data_json["cell"]
-            hit = False
+            if self.turn:
+                hit_cell=data_json["cell"]
+                hit = False
 
-            if(hit_cell in self.Opponent.shipsLocation):
-                
-                hit=True
-                self.Opponent.shipsLocation.remove(hit_cell)
-                
-                if not self.Opponent.shipsLocation:
-                    self.send(text_data=json.dumps({"type":"win"}))
-                    self.Opponent.send(text_data=json.dumps({"type":"lost"}))
-                
-            self.Opponent.send(text_data=json.dumps({"type":"opponent_move", "cell": hit_cell, "hit": hit}))
-            self.send(text_data=json.dumps({"type":"ack_hit", "cell":hit_cell, "hit": hit}))
+                if(hit_cell in self.Opponent.shipsLocation):
+                    
+                    hit=True
+                    self.Opponent.shipsLocation.remove(hit_cell)
+                    
+                    if not self.Opponent.shipsLocation:
+                        self.send(text_data=json.dumps({"type":"win"}))
+                        self.Opponent.send(text_data=json.dumps({"type":"lost"}))
+                    
+                self.Opponent.send(text_data=json.dumps({"type":"opponent_move", "cell": hit_cell, "hit": hit}))
+                self.turn=False
+                self.send(text_data=json.dumps({"type":"ack_hit", "cell":hit_cell, "hit": hit}))
+
+                self.turn=False
+                self.Opponent.turn=True
+            
+
                 
 
 

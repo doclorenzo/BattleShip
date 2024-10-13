@@ -202,7 +202,6 @@ function sendFunc() {
 
         else if(data.type=="Start"){
             document.getElementById('content').innerHTML = data.page;
-            document.getElementById('ClickableTable').addEventListener('click', rilevaCella);
 
             for(let r of table.rows){
                 for(let c of r.cells){
@@ -217,22 +216,31 @@ function sendFunc() {
         else if(data.type=="opponent_move"){
 
             if(data.hit){
-                document.getElementById("A"+data.cell).classList.add("cella-con-croce")
+                document.getElementById("A"+data.cell).style.backgroundColor="red"
+                document.getElementById("A"+data.cell).textContent="X"
             }
             else{
                 document.getElementById("A"+data.cell).style.backgroundColor="white"
+                document.getElementById("A"+data.cell).textContent="O"
             }
+
+            document.getElementById("turn_on").textContent="Your Turn"
+            document.getElementById('ClickableTable').addEventListener('click', rilevaCella);
+
         }
 
         else if(data.type=="ack_hit"){
 
             if(data.hit){
-                document.getElementById("B"+data.cell).classList.add("cella-con-croce")
+                document.getElementById("B"+data.cell).style.backgroundColor="red"
+                document.getElementById("B"+data.cell).textContent="X"
             }
             else{
                 document.getElementById("B"+data.cell).style.backgroundColor="white"
+                document.getElementById("B"+data.cell).textContent="O"
             }
-
+            document.getElementById("turn_on").textContent="Opponent's turn"
+            document.getElementById('ClickableTable').removeEventListener('click')
         }
 
         else if(data.type=="win"){
@@ -244,6 +252,14 @@ function sendFunc() {
             document.getElementById("youWinLost").classList.add("youlost-text")
             document.getElementById("youWinLost").textContent="YOU LOST"
             showEndgame()
+        }
+
+        else if(data.type=="turn_on"){
+            document.getElementById("turn_on").textContent="Your Turn"
+            document.getElementById('ClickableTable').addEventListener('click', rilevaCella);
+        }
+        else if(data.type=="turn_off"){
+            document.getElementById("turn_on").textContent="Opponent's turn"
         }
     }
 }

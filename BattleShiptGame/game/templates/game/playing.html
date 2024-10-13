@@ -1,8 +1,11 @@
-<body id="content">
-    <div class="container">
-        <div class="aggiusta">
-            <h2 align=center style="background-color: #2c3e50; color:white;", id="playerName" >{{playerName}}</h2>
-            <table id="myBoard">
+{% load static %}
+<body>
+        <div id="GiocoBack" style="background: url('{% static "game/images/PlayingBackGround.jpeg" %}') no-repeat center center fixed; background-size: contain;">
+        <h2 id="turn_on" style="margin-bottom:2px; color:White"></h2>
+        <div id="PlayingTables">
+            <div class="aggiusta" style="margin-right:10%; margin-left:0%">
+            <h2 align=center class="Names" id="playerName" >{{playerName}}</h2>
+            <table id="myBoard" style="opacity:0.7">
                 <tbody>
                     {% for i in '0123456789'|make_list %}
                     <tr>
@@ -15,8 +18,8 @@
             </table>
         </div>
         <div class="aggiusta2">
-            <h2 align=center style="background-color: #2c3e50; color:white;", id="playerName" >{{opponentName}}</h2>
-            <table id="ClickableTable">
+            <h2 align=center class="Names" id="playerName" >{{opponentName}}</h2>
+            <table id="ClickableTable" style="opacity:0.7">
                 <tbody>
                     {% for i in '0123456789'|make_list %}
                     <tr>
@@ -28,12 +31,12 @@
                 </tbody>
             </table>
         </div> 
+        <div>
     </div> 
 
     <div class="overlay" id="overlay"></div>
 
     <div class="youwin-container" id="youwin">
         <h1 id="youWinLost"></h1>
-    </div>
-
+        </div
 </body>

@@ -103,16 +103,11 @@ class ShipConsumer(WebsocketConsumer):
                 self.turn=False
                 self.Opponent.turn=True
             
-
-                
-
-
-
     def disconnect(self, code):
-       
        msg=json.dumps({
            "type":"Disconnected"
        })
+
        self.Opponent.send(msg)
 
 

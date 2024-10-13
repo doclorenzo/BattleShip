@@ -13,6 +13,7 @@
     display: flex;
     justify-content: center; /* Centra orizzontalmente */
     align-items: center; /* Centra verticalmente */
+    width: 70%;
 }
 
 #GiocoBack{
@@ -191,7 +192,7 @@ button {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* Sfondo semi-trasparente */
+    background-color: rgba(0, 0, 0, 0.603); /* Sfondo semi-trasparente */
     display: none; /* Inizialmente nascosto */
     align-items: center;
     justify-content: center;
@@ -215,10 +216,11 @@ body.blur-active #content {
     border: 8px solid #f3f3f3; /* Colore di base */
     border-top: 8px solid #3498db; /* Colore della parte mobile */
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     animation: spin 1s linear infinite;
     margin-bottom: 20px;
+    margin-left: 25%
 }
 
 /* Animazione per la rotellina */
@@ -303,27 +305,4 @@ body.blur-active #content {
 .overlay.show {
     visibility: visible;
     pointer-events: auto; /* Rende il contenuto non cliccabile */
-}
-
-.x-cell {
-    color: red;
-    font-size: 14px;
-    font-weight: bold;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    width: 40px;  /* Same size as draggable squares */
-    height: 40px; /* Same size as draggable squares */
-    text-align: center;
-    vertical-align: middle;
-    position: relative; /* Ensure proper positioning of elements */
-    padding: 0; /* Remove padding from the cells */
-    box-sizing: border-box; /* Ensure borders are included in width and height */
-    background-color: #a1e0af;
-    text-align: center;
-    transition: background-color 0.3s ease;
-    border-radius: 5px;
-    border: 1px solid;
 }

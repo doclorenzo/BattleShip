@@ -245,12 +245,12 @@ function sendFunc() {
 
         else if(data.type=="win"){
             document.getElementById("youWinLost").classList.add("youwin-text")
-            document.getElementById("youWinLost").textContent="YOU WIN"
+            document.getElementById("youWinLost").textContent="YOU WIN!"
             showEndgame()
         }
         else if(data.type=="lost"){
             document.getElementById("youWinLost").classList.add("youlost-text")
-            document.getElementById("youWinLost").textContent="YOU LOST"
+            document.getElementById("youWinLost").textContent="YOU LOST!"
             showEndgame()
         }
 
@@ -261,6 +261,13 @@ function sendFunc() {
         else if(data.type=="turn_off"){
             document.getElementById("turn_on").textContent="Opponent's turn"
         }
+
+        else if(data.type="Disconnected"){
+            document.getElementById("youWinLost").classList.add("youwin-text")
+            document.getElementById("youWinLost").textContent="Your opponent surrendered"
+            showEndgame()
+        }
+
     }
 }
 

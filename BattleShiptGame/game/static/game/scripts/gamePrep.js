@@ -167,10 +167,10 @@ function sendFunc() {
     //prepare the data
 
     playerName=document.getElementById("playerName").getAttribute("value")
-    /*if(listUsedShapes.length!=9) {
+    if(listUsedShapes.length!=9) {
         alert("Place all the ships on the board!");
         return;
-    }*/
+    }
     let table=document.getElementById("droppable-table")
     for(let r of table.rows){
         for(let c of r.cells){

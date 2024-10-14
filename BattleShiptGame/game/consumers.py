@@ -1,8 +1,11 @@
 import json
 from channels.generic.websocket import WebsocketConsumer
 from django.template.loader import render_to_string
+import threading
 
 class ShipConsumer(WebsocketConsumer):
+
+    lock=threading.Lock()
 
     #shared between alla the instances
     Queue=''
@@ -21,22 +24,37 @@ class ShipConsumer(WebsocketConsumer):
 
         if(data_json["type"]=="begin"):
 
+            ShipConsumer.lock.acquire()
             #if Queue empty, add player to queue
             if not ShipConsumer.Queue:
                 self.name=data_json["name"]
                 self.shipsLocation=data_json["ships"]
                 ShipConsumer.Queue=self
+
+                ShipConsumer.lock.release()
+
                 msg=json.dumps({
                 "type":"Queue"
                 })
                 self.send(text_data=msg)
+                self.in_queue=True
             
             #if queue not empty, create session
             else:
 
+                try: 
+                    if self.in_queue:
+                        self.disconnect()
+                except:
+                    pass
+
+                self.in_queue=False
                 #empty queue
                 queuedPlayer=ShipConsumer.Queue
                 ShipConsumer.Queue=''
+
+                ShipConsumer.lock.release()
+                queuedPlayer.in_queue=False
 
                 self.name=data_json["name"]
                 self.shipsLocation=data_json["ships"]
@@ -71,15 +89,6 @@ class ShipConsumer(WebsocketConsumer):
                 self.turn=True
                 self.Opponent.turn=False
 
-                print("Player" + self.name + " point of view:")
-                print(self.idSession)
-                print(self.shipsLocation)
-                print("Opponent:" + self.Opponent.name)
-
-                print("Player" + queuedPlayer.name + " point of view:")
-                print(queuedPlayer.idSession)
-                print(queuedPlayer.shipsLocation)
-                print("Opponent:" + queuedPlayer.Opponent.name)
             
         elif (data_json["type"]=="hit"):
             
@@ -104,11 +113,25 @@ class ShipConsumer(WebsocketConsumer):
                 self.Opponent.turn=True
             
     def disconnect(self, code):
-       msg=json.dumps({
-           "type":"Disconnected"
-       })
-
-       self.Opponent.send(msg)
+       
+        print(code)
+        if self.in_queue:
+            ShipConsumer.Queue=''
+            try:
+                ShipConsumer.lock.release()
+            except:
+                pass
+        else:
+            if code!=1000:
+                msg=json.dumps({
+                    "type":"Disconnected"
+                })
+                self.Opponent.send(msg)
+            else:
+                msg=json.dumps({
+                    "type":"O"
+                })
+                self.Opponent.send(msg)
 
 
 

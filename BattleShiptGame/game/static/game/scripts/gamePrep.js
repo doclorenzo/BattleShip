@@ -1,6 +1,7 @@
 let occupiedCellsList=[];
 let listUsedShapes=[];
 let shipSocket;
+let endgame=false;
 
 //Basic script to enable the eunctionalities of the draggable objects
 
@@ -240,18 +241,20 @@ function sendFunc() {
                 document.getElementById("B"+data.cell).textContent="O"
             }
             document.getElementById("turn_on").textContent="Opponent's turn"
-            document.getElementById('ClickableTable').removeEventListener('click')
+            document.getElementById('ClickableTable').removeEventListener('click', rilevaCella)
         }
 
         else if(data.type=="win"){
             document.getElementById("youWinLost").classList.add("youwin-text")
             document.getElementById("youWinLost").textContent="YOU WIN!"
             showEndgame()
+            shipSocket.close(1000, "win")
         }
         else if(data.type=="lost"){
             document.getElementById("youWinLost").classList.add("youlost-text")
             document.getElementById("youWinLost").textContent="YOU LOST!"
             showEndgame()
+            shipSocket.close(1000, "lost")
         }
 
         else if(data.type=="turn_on"){
@@ -262,15 +265,22 @@ function sendFunc() {
             document.getElementById("turn_on").textContent="Opponent's turn"
         }
 
-        else if(data.type="Disconnected"){
+        else if(data.type=="Disconnected"){
             document.getElementById("youWinLost").classList.add("youwin-text")
             document.getElementById("youWinLost").textContent="Your opponent surrendered"
             showEndgame()
+            
         }
 
+        else if(data.type="O"){
+            comsole.log("OOOOOO ha vinto il ")
+        }
     }
 }
 
+shipSocket.onclose = function(event) {
+    console.log(`Connessione chiusa: codice = ${event.code}, motivo = ${event.reason}`);
+};
 
 //Queue Status desing script 
 function showLoading() {
@@ -298,9 +308,6 @@ function showEndgame() {
     // Aggiungi la classe per far partire l'animazione
     youWin.classList.add('show');
     overlay.classList.add('show');
-
-    // Sfoca il contenuto della pagina
-    document.querySelector('.content').classList.add('blur-background')
-
+    
 }
 

@@ -224,11 +224,9 @@ function sendFunc() {
             else{
                 document.getElementById("A"+data.cell).style.backgroundColor="white"
                 document.getElementById("A"+data.cell).textContent="O"
-            }
-
-            document.getElementById("turn_on").textContent="Your Turn"
-            document.getElementById('ClickableTable').addEventListener('click', rilevaCella);
-
+                document.getElementById("turn_on").textContent="Your Turn"
+                document.getElementById('ClickableTable').addEventListener('click', rilevaCella);
+            } 
         }
 
         else if(data.type=="ack_hit"){
@@ -240,9 +238,9 @@ function sendFunc() {
             else{
                 document.getElementById("B"+data.cell).style.backgroundColor="white"
                 document.getElementById("B"+data.cell).textContent="O"
+                document.getElementById("turn_on").textContent="Opponent's turn"
+                document.getElementById('ClickableTable').removeEventListener('click', rilevaCella)
             }
-            document.getElementById("turn_on").textContent="Opponent's turn"
-            document.getElementById('ClickableTable').removeEventListener('click', rilevaCella)
         }
 
         else if(data.type=="win"){

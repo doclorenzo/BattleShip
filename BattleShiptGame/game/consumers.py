@@ -99,18 +99,21 @@ class ShipConsumer(WebsocketConsumer):
                 if(hit_cell in self.Opponent.shipsLocation):
                     
                     hit=True
+                    self.turn=True
+                    self.Opponent.turn=False
                     self.Opponent.shipsLocation.remove(hit_cell)
                     
                     if not self.Opponent.shipsLocation:
                         self.send(text_data=json.dumps({"type":"win"}))
                         self.Opponent.send(text_data=json.dumps({"type":"lost"}))
+                else:
+                    self.turn=False
+                    self.Opponent.turn=True
                     
                 self.Opponent.send(text_data=json.dumps({"type":"opponent_move", "cell": hit_cell, "hit": hit}))
-                self.turn=False
                 self.send(text_data=json.dumps({"type":"ack_hit", "cell":hit_cell, "hit": hit}))
 
-                self.turn=False
-                self.Opponent.turn=True
+                
             
     def disconnect(self, code):
        

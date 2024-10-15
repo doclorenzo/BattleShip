@@ -2,6 +2,7 @@ let occupiedCellsList=[];
 let listUsedShapes=[];
 let shipSocket;
 let endgame=false;
+HitCells=[]
 
 //Basic script to enable the eunctionalities of the draggable objects
 
@@ -167,10 +168,10 @@ function sendFunc() {
     //prepare the data
 
     playerName=document.getElementById("playerName").getAttribute("value")
-    if(listUsedShapes.length!=9) {
+    /*if(listUsedShapes.length!=9) {
         alert("Place all the ships on the board!");
         return;
-    }
+    }*/
     let table=document.getElementById("droppable-table")
     for(let r of table.rows){
         for(let c of r.cells){
@@ -291,11 +292,18 @@ function showLoading() {
 // Function which manages the click of a table's cell
 function rilevaCella(event) {
     const cella = event.target;  
-    if (cella.tagName === 'TD') {  
-        shipSocket.send(JSON.stringify({
-            "type":"hit",
-            "cell":cella.id.substr(1,2)
-        }))
+    if (cella.tagName === 'TD') {
+        console.log(cella.id)
+        if(!HitCells.includes(cella.id)){
+            HitCells.push(cella.id)
+            shipSocket.send(JSON.stringify({
+                "type":"hit",
+                "cell":cella.id.substr(1,2)
+            }))
+        }
+        else{
+            alert("You have already hit that cell!")
+        }
     }
 }
 

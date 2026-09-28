@@ -52,8 +52,8 @@ document.querySelectorAll('#droppable-table td').forEach(cell => {
 function checkFit(rowIndex, cellIndex, shape,  rows, cols) {
     let table = document.getElementById('droppable-table');
 
-    if(shape.classList.contains("rectangle-1x2") && rowIndex+rows+1>10) return false;
-    if(shape.classList.contains("rectangle-3x1") && cellIndex+cols+1>10) return false;
+    if(shape.classList.contains("rectangle-1x2") && rowIndex+rows-1>10) return false;
+    if(shape.classList.contains("rectangle-3x1") && cellIndex+cols-1>10) return false;
 
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {

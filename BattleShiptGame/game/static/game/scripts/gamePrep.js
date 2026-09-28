@@ -53,7 +53,7 @@ function checkFit(rowIndex, cellIndex, shape,  rows, cols) {
     let table = document.getElementById('droppable-table');
 
     if(shape.classList.contains("rectangle-1x2") && rowIndex+rows+1>10) return false;
-    if(shape.classList.contains("rectangle-3x1") && cellIndex+cols+2>10) return false;
+    if(shape.classList.contains("rectangle-3x1") && cellIndex+cols+1>10) return false;
 
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
@@ -275,11 +275,12 @@ function sendFunc() {
             comsole.log("OOOOOO ha vinto il ")
         }
     }
-}
 
-shipSocket.onclose = function(event) {
-    console.log(`Connessione chiusa: codice = ${event.code}, motivo = ${event.reason}`);
-};
+    shipSocket.onclose = function(event) {
+        console.log(`Connessione chiusa: codice = ${event.code}, motivo = ${event.reason}`);
+    };
+
+}
 
 //Queue Status desing script 
 function showLoading() {

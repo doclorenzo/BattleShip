@@ -25,12 +25,16 @@ SECRET_KEY = 'django-insecure-sb)b^hitheo2-mt0ldr)))sed01$o8-j#k^-d+5#kbk%swk*o%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['127.0.0.1','localhost','seabattle-sikuda.amvera.io']
+CSRF_TRUSTED_ORIGINS = [
+    'https://seabattle-sikuda.amvera.io',
+    'ws://seabattle-sikuda.amvera.io'
+]
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'channels',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -80,7 +84,7 @@ WSGI_APPLICATION = 'BattleShiptGame.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'data' / 'db.sqlite3',
     }
 }
 
